@@ -26,12 +26,12 @@ def result(players, combination, pot, hands, community, money):
         suits_c[community[hand][0]] += 1
         numbers_c[community[hand][1] - 2] += 1
     for hand in range(players):
-        combination.append([""])
+        combination.append([''])
         if pot[hand + 1][1]:
             length = 0
             suits = suits_c[:]
             numbers = numbers_c[:]
-            if pot[hand + 1] != "fold":
+            if pot[hand + 1] != 'fold':
                 for j in range(2):
                     suits[hands[hand][j][0]] += 1
                     numbers[hands[hand][j][1] - 2] += 1
@@ -39,16 +39,16 @@ def result(players, combination, pot, hands, community, money):
                     if numbers[12 - j] > 0:
                         length += 1
                         if length == 5:
-                            combination[hand] = ["straight", 14 - j]
+                            combination[hand] = ['straight', 14 - j]
                             break
                     else:
                         length = 0
                 for j in range(4):
                     if suits[j] >= 5:
-                        combination[hand] = ["flush"]
+                        combination[hand] = ['flush']
                         flush_suit = j
                         break
-                if combination[hand] == ["flush"]:
+                if combination[hand] == ['flush']:
                     if first_flush:
                         for j in range(5):
                             if community[j][0] == flush_suit:
@@ -65,52 +65,52 @@ def result(players, combination, pot, hands, community, money):
                                 combination[hand].append(14 - j)
                             length += 1
                             if length == 5:
-                                combination[hand] = ["straight flush", 14 - j]
+                                combination[hand] = ['straight flush', 14 - j]
                                 break
                         else:
                             length = 0
-                if combination[hand][0] != "straight flush":
+                if combination[hand][0] != 'straight flush':
                     for j in range(13):
                         if numbers[j] == 4:
-                            combination[hand] = ["poker", j + 2]
+                            combination[hand] = ['poker', j + 2]
                             for k in range(13):
                                 if numbers[12 - k] == 1:
                                     combination[hand].append(14 - k)
                                     break
-                    if combination[hand][0] != "poker":
+                    if combination[hand][0] != 'poker':
                         for j in range(13):
                             if numbers[12 - j] == 3:
-                                combination[hand] = ["drill", 14 - j]
+                                combination[hand] = ['drill', 14 - j]
                                 for k in range(13):
                                     if numbers[12 - k] >= 2 and combination[hand][1] != 14 - k:
-                                        combination[hand][0] = "full house"
+                                        combination[hand][0] = 'full house'
                                         combination[hand].append(14 - k)
                                         break
                                 break
-                        if (combination[hand][0] != "flush" and combination[hand][0] != "straight" and
-                                combination[hand][0] != "full house"):
-                            if combination[hand][0] == "drill":
+                        if (combination[hand][0] != 'flush' and combination[hand][0] != 'straight' and
+                                combination[hand][0] != 'full house'):
+                            if combination[hand][0] == 'drill':
                                 for j in range(13):
                                     if len(combination[hand]) != 4:
                                         if numbers[12 - j] > 0 and 14 - j != combination[hand][1]:
                                             combination[hand].append(14 - j)
-                            if combination[hand][0] != "drill":
+                            if combination[hand][0] != 'drill':
                                 for j in range(13):
                                     if numbers[12 - j] == 2:
-                                        if combination[hand][0] == "":
-                                            combination[hand][0] = "pair"
+                                        if combination[hand][0] == '':
+                                            combination[hand][0] = 'pair'
                                             combination[hand].append(14 - j)
                                         else:
-                                            combination[hand][0] = "double pair"
+                                            combination[hand][0] = 'double pair'
                                             combination[hand].append(12 - j)
                                             break
-                                if combination[hand][0] == "double pair":
+                                if combination[hand][0] == 'double pair':
                                     for j in range(13):
                                         if (numbers[12 - j] > 0 and 14 - j != combination[hand][1] and
                                                 14 - j != combination[hand][2]):
                                             combination[hand].append(14 - j)
                                             break
-                                elif combination[hand][0] == "pair":
+                                elif combination[hand][0] == 'pair':
                                     for j in range(13):
                                         if numbers[12 - j] > 0 and 14 - j != combination[hand][1]:
                                             if len(combination[hand]) == 5:
@@ -123,21 +123,21 @@ def result(players, combination, pot, hands, community, money):
                                                 break
                                             combination[hand].append(14 - j)
 
-            if combination[hand][0] == "":
+            if combination[hand][0] == '':
                 combination[hand][0] = 0
-            elif combination[hand][0] == "pair":
+            elif combination[hand][0] == 'pair':
                 combination[hand][0] = 1
-            elif combination[hand][0] == "double pair":
+            elif combination[hand][0] == 'double pair':
                 combination[hand][0] = 2
-            elif combination[hand][0] == "drill":
+            elif combination[hand][0] == 'drill':
                 combination[hand][0] = 3
-            elif combination[hand][0] == "straight":
+            elif combination[hand][0] == 'straight':
                 combination[hand][0] = 4
-            elif combination[hand][0] == "flush":
+            elif combination[hand][0] == 'flush':
                 combination[hand][0] = 5
-            elif combination[hand][0] == "full house":
+            elif combination[hand][0] == 'full house':
                 combination[hand][0] = 6
-            elif combination[hand][0] == "poker":
+            elif combination[hand][0] == 'poker':
                 combination[hand][0] = 7
             else:
                 combination[hand][0] = 8
@@ -150,10 +150,10 @@ def result(players, combination, pot, hands, community, money):
     for hand in range(players - 1):
         if combination[hand][:len(combination[hand + 1]) - 2] == combination[hand - 1][:len(combination[hand]) - 2]:
             combination[hand][-1] = combination[hand - 1][-1]
-    print(hands[1:players])
     w_number = 0
     for hand in range(players):
         if combination[hand][-1] == 1:
+            print('AI', combination[hand][-2], 'won')
             w_number += 1
         else:
             break
@@ -161,48 +161,72 @@ def result(players, combination, pot, hands, community, money):
         money[combination[hand][-2] - 1] += pot[0] / w_number
 
 
-def bet(which, players: int, raised, pot, money, player_place):
+def bet(which, player_count: int, raised, pot, money, player_place, hands, community):
     not_raised: int = 0
     if which == 1:
         player_id: int = 2
     else:
         player_id: int = 0
     counter: int = 0
-    while (not_raised < players and counter != players - 1) or (which == 1 and player_id - players == 1):
-        if pot[player_id % players + 1][1]:
-            if player_id % players == player_place:
-                match player_id % players + 1:
+    while (not_raised < player_count and counter != player_count - 1) or (which == 1 and player_id - player_count == 1):
+        if pot[player_id % player_count + 1][1]:
+            if player_id % player_count == player_place:
+                for i in range(player_count):
+                    if i != player_place:
+                        match i:
+                            case 0:
+                                if pot[i + 1][1]:
+                                    print('Small blind:', pot[1][0])
+                                else:
+                                    print('Small blind has folded with:', pot[1][0])
+                            case 1:
+                                if pot[i + 1][1]:
+                                    print('Big blind:', pot[2][0])
+                                else:
+                                    print('Big blind has folded with:', pot[2][0])
+                            case _:
+                                if pot[i + 1][1]:
+                                    print('AI', str(i + 1) + ':', pot[i + 1][0])
+                                else:
+                                    print(f'AI', str(i + 1), 'has folded with:', pot[i + 1][0])
+                    else:
+                        if pot[i + 1][1]:
+                            print('Player:', pot[i + 1][0])
+                        else:
+                            print('Player has folded with:', pot[i + 1][0])
+                print('In your hand:', *hands[player_place])
+                if which != 1:
+                    print('Community:', *community[:1 + which])
+                match player_id % player_count + 1:
                     case 1:
-                        print("You are the small blind!")
+                        print('You are the small blind!')
                     case 2:
-                        print("You are the big blind!")
+                        print('You are the big blind!')
                     case _:
-                        print(f"You are the player {player_id % players + 1}!")
+                        print(f'You are the player {player_id % player_count + 1}!')
 
-                print(f"Your bet is currently {pot[player_id % players + 1][0]}!")
-                print(f"Your bet must be raised up to {raised}!")
+                print(f'Your bet is currently {pot[player_id % player_count + 1][0]}!')
+                if pot[player_id % player_count + 1][0] != raised:
+                    print(f'Your bet must be raised up to {raised}!')
 
-                a: int = int(input("Raise:\n"))
+                a: int = int(input('Raise:\n'))
+                print('\n' * 50)
             else:
-                a = ai(player_id % players + 1, which)
-            if a + pot[player_id % players + 1][0] <= raised:
+                a = ai(player_id % player_count + 1, which)
+            if a + pot[player_id % player_count + 1][0] <= raised:
                 counter += 1
             else:
                 counter = 0
-            if a + pot[player_id % players + 1][0] < raised:
-                pot[player_id % players + 1][1] = False
-            if pot[player_id % players + 1][1]:
+            if a + pot[player_id % player_count + 1][0] < raised:
+                pot[player_id % player_count + 1][1] = False
+            if pot[player_id % player_count + 1][1]:
                 pot[0] += int(a)
-                raised = int(a) + pot[player_id % players + 1][0]
-                pot[player_id % players + 1][0] += int(a)
-                money[player_id % players] -= int(a)
-
-            else:
-                print(player_id % players + 1, "folded")
+                raised = int(a) + pot[player_id % player_count + 1][0]
+                pot[player_id % player_count + 1][0] += int(a)
+                money[player_id % player_count] -= int(a)
         else:
             counter += 1
         player_id += 1
-        print(raised)
     return raised
 
 
@@ -218,8 +242,8 @@ def main():
     # The first player is the small blind
     # The second player is the big blind
 
-    player_count: int = int(input("How many players are playing?\n"))  # Number of players
-
+    player_count: int = int(input('How many players are playing?\n'))  # Number of players
+    print('\n' * 50)
     money = []
 
     # Gives every player a counter which counts how much money they won
@@ -248,25 +272,20 @@ def main():
 
         combination = []
         deal(player_count, hands, deck, community)
-        print("In your hand:", str(hands[player_place]).strip(), sep='\n')
         pot[1][0] = 50
         money[0] -= 50
         pot[2][0] = 100
         money[1] -= 100
 
         for i in range(4):
-            raised = bet(i+1, player_count, raised, pot, money, player_place)
-            if i != 3:
-                print(community[:3+i])
-                print("\n" * 30)
+            raised = bet(i + 1, player_count, raised, pot, money, player_place, hands, community)
         result(player_count, combination, pot, hands, community, money)
-        print(money)
-
-        if input("If you want to end the game type in \'exit\'\n"
-                 "If you want to continue the game type in \'next round\'\n").lower() == "exit":
+        print(*money)
+        if input('If you want to end the game type in \'exit\'\n'
+                 'If you want to continue the game type in \'next round\'\n').lower() == 'exit':
             break
 
-    print("The game is over!")
+    print('The game is over!')
     time.sleep(3)
 
 
